@@ -1,0 +1,22 @@
+{
+    "name": "matejbucek/power-di-cli",
+    "description": "The PowerDI CLI tool",
+    "type": "project",
+    "require": {
+        "symfony/console": "^7.1",
+        "symfony/finder": "^7.1",
+        "symfony/process": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "PowerDICLI\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Matěj Bucek",
+            "email": "info@mbucek.cz"
+        }
+    ],
+    "minimum-stability": "stable"
+}
