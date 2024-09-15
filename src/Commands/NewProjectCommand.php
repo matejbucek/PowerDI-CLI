@@ -41,14 +41,14 @@ class NewProjectCommand extends Command {
             return Command::FAILURE;
         }
 
-        $output->writeln("Creating project $name");
+        $output->writeln("<info>Creating project $name</info>");
         $process = new Process(["git", "clone", "https://github.com/matejbucek/PowerDI-Project.git", $name]);
         if ($process->run() !== 0) {
             $output->writeln("<error>Error while cloning the repository: " . $process->getErrorOutput() . "</error>");
             return Command::FAILURE;
         }
 
-        $output->writeln("<info>Setting up the project</info>");
+        $output->writeln("<comment>Setting up the project</comment>");
         $composerJson = json_decode(file_get_contents("$name/composer.json"), true);
         $composerJson["name"] = "$username/$name";
         $composerJson["description"] = $description ? $description : "A new PowerDI project";
