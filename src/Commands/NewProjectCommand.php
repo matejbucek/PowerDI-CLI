@@ -25,18 +25,18 @@ class NewProjectCommand extends Command {
         $username = $input->getArgument("username");
         $description = $input->getArgument("description" ?? "");
 
-        if(!$username) {
+        if (!$username) {
             $process = new Process(["whoami"]);
             $process->run();
             $username = trim($process->getOutput());
         }
 
-        if($username === "") {
+        if ($username === "") {
             $output->writeln("<error>Error: Please provide a username or run the command as a user with a username</error>");
             return Command::FAILURE;
         }
 
-        if(file_exists($name)) {
+        if (file_exists($name)) {
             $output->writeln("<error>Error: The directory $name already exists</error>");
             return Command::FAILURE;
         }
@@ -50,9 +50,9 @@ class NewProjectCommand extends Command {
 
         $output->writeln("<comment>Setting up the project</comment>");
         $composerJson = json_decode(file_get_contents("$name/composer.json"), true);
-        $composerJson["name"] = "$username/$name";
+        $composerJson["name"] = strtolower($username)."/".strtolower($name);
         $composerJson["description"] = $description ? $description : "A new PowerDI project";
-        file_put_contents("$name/composer.json", json_encode($composerJson, JSON_PRETTY_PRINT));
+        file_put_contents("$name/composer.json", json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         $process = new Process(["composer", "install", "--working-dir=$name"]);
         if ($process->run() !== 0) {
             $output->writeln("<error>Error while installing dependencies: " . $process->getErrorOutput() . "</error>");
